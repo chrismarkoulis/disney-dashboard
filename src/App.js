@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCharacters } from "./store/features/charactersSlice";
-import { CharacterTable, CharacterModal } from "./components";
+import { CharacterTable, CharacterModal, PieChart } from "./components";
 import "./App.css";
 
 function App() {
@@ -26,6 +26,7 @@ function App() {
   return (
     <div className="app-container">
       <h1>Disney Dashboard</h1>
+      <PieChart characters={characters} />
       <CharacterTable
         characters={characters}
         status={status}

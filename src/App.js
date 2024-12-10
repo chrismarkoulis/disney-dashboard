@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCharacters } from "./store/features/charactersSlice";
-import { CharacterTable } from "./components";
+import { CharacterTable, CharacterModal } from "./components";
 import "./App.css";
 
 function App() {
@@ -19,8 +19,12 @@ function App() {
     setSelectedCharacter(character);
   };
 
+  const closeModal = () => {
+    setSelectedCharacter(null);
+  };
+
   return (
-    <div className="App">
+    <div className="app-container">
       <h1>Disney Dashboard</h1>
       <CharacterTable
         characters={characters}
@@ -29,6 +33,9 @@ function App() {
         setPage={setPage}
         page={page}
       />
+      {selectedCharacter && (
+        <CharacterModal character={selectedCharacter} onClose={closeModal} />
+      )}
     </div>
   );
 }

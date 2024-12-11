@@ -1,70 +1,82 @@
-# Getting Started with Create React App
+# React SPA Disney Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 1. How to set up and run the project locally
 
-## Available Scripts
+To run the project locally, follow these steps:
 
-In the project directory, you can run:
+1. **Clone the repository:**
+```bash
+git clone https://github.com/chrismarkoulis/disney-dashboard.git
+```
 
-### `npm start`
+2. **Navigate to the project directory:**
+```bash
+cd disney-dashboard
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+3. **Install dependencies:** 
+Ensure that you have Node.js and npm installed. Then, run the following command to install all necessary dependencies:
+```bash
+npm install
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+4. **Start the development server:**
+```bash
+npm start
+```
 
-### `npm test`
+5. **Run tests:**
+```bash
+npm test
+```
+## 2. Libraries & Tools Used in the Project
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **React**: JavaScript library for building user interfaces.
+- **React DOM**: Provides DOM-specific methods for rendering React components.
+- **Material-UI** (`@mui/material`): A popular React UI framework that offers a wide range of customizable UI components.
+- **Material-UI Icons** (`@mui/icons-material`): A package providing Material Design icons as React components.
+- **Axios**: A promise-based HTTP client for making HTTP requests, used to interact with the Disney API and other endpoints.
+- **Redux Toolkit** (`@reduxjs/toolkit`): A library that simplifies Redux state management, providing a set of tools for efficient Redux development.
+- **React Redux** (`react-redux`): A library to connect React components with the Redux store.
+- **Highcharts**: A popular JavaScript charting library for building interactive charts, used to display data visually.
+- **Highcharts React** (`highcharts-react-official`): A React wrapper for integrating Highcharts into React components.
+- **XLSX**: A library used for parsing and writing Excel files, utilized for exporting data to Excel.
+- **Jest**: A JavaScript testing framework used for unit testing the app components.
+- **React Testing Library**: A testing utility that helps in testing React components by interacting with the DOM as a user would.
+- **Jest DOM** (`@testing-library/jest-dom`): Provides custom Jest matchers to test the DOM elements.
+- **Create React App** (`cra-template`): A tool for setting up a React project with a predefined configuration, used to quickly start the project.
 
-### `npm run build`
+### Disney API
+- **Disney API**: An API that provides data on Disney characters, their appearances in TV shows and films, and more. You can find the documentation and usage details at [Disney API Documentation](https://disneyapi.dev/).
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 3. Technical Approach
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+In this application, we fetch Disney character data from the Disney API and display it through different components like tables, modals, and charts.
 
-### `npm run eject`
+### Data Fetching
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **Incremental Fetching**: 
+  - The data is fetched incrementally based on pagination. We only request the specific set of characters corresponding to the current page and page size, reducing the amount of data loaded at once. This is achieved using the `fetchCharacters` Redux action.
+  - The API call to `https://api.disneyapi.dev/character?page={page}&pageSize={pageSize}` is triggered each time the user changes the page or updates the number of rows per page.
+  
+- **Redux State Management**:
+  - The data for each page is stored in the Redux store in a **mapped object** format, where the key is the `page` number and the value is the array of character data for that page. This allows us to avoid redundant API calls and ensures that data for previously loaded pages is available without re-fetching.
+  - We store the `totalPages` in the Redux state to manage pagination in the table.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Caching and Performance Optimization
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- **Page-Level Data Caching**: Instead of using **localStorage**, we cache the fetched character data in the Redux store. When the user navigates between pages, the app checks if the data for that page is already available in the store and uses it. If not, a new request is made to the API for that specific page.
+  
+- **Data Handling**: When the data for a new page is fetched, the characters are added to the `characters` object in the Redux store, where each page is stored as a key with an array of character objects as its value. This structure allows us to efficiently access and display data based on the current page.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Data Display
 
-## Learn More
+- **Character Table**: 
+  - The characters are displayed in a paginated **Material-UI Table**. The table allows users to search for characters by name, sort the data, and view the number of TV shows and video games each character is associated with. 
+  - The table also supports pagination, with the number of rows per page and the current page being adjustable.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **Character Modal**: When a user clicks on a row in the table, a **modal** is displayed with detailed information about the selected character, including their TV shows, video games, and more.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **Pie Chart**: A **Highcharts pie chart** visualizes the distribution of characters' film appearances, based on the data fetched from the API.
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

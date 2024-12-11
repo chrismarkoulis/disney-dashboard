@@ -7,6 +7,7 @@ import {
   TableRow,
   TablePagination,
   TextField,
+  TableSortLabel,
 } from "@mui/material";
 import "./styles.css";
 
@@ -21,6 +22,14 @@ function CharacterTable({
   totalPages,
 }) {
   const [search, setSearch] = useState("");
+  const [order, setOrder] = useState("asc");
+  const [orderBy, setOrderBy] = useState("name");
+
+  const handleRequestSort = (property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage + 1);
@@ -35,6 +44,15 @@ function CharacterTable({
   const filteredCharacters = characters.filter((character) =>
     character.name.toLowerCase().includes(search.toLowerCase())
   );
+
+  const sortedCharacters = filteredCharacters.sort((a, b) => {
+    if (orderBy === "name") {
+      return order === "asc"
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name);
+    }
+    return 0;
+  });
 
   const paginatedCharacters = filteredCharacters.slice(
     (page - 1) * rowsPerPage,
@@ -58,7 +76,15 @@ function CharacterTable({
       <Table className="character-table">
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
+            <TableCell sortDirection={orderBy === "name" ? order : false}>
+              <TableSortLabel
+                active={orderBy === "name"}
+                direction={orderBy === "name" ? order : "asc"}
+                onClick={() => handleRequestSort("name")}
+              >
+                Name
+              </TableSortLabel>
+            </TableCell>
             <TableCell>TV Shows</TableCell>
             <TableCell>Video Games</TableCell>
             <TableCell>Allies</TableCell>

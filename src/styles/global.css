@@ -1,0 +1,12 @@
+:root {
+  --primary-bg-color: #f4f4f4;
+  --primary-color: #1976d2;
+  --text-color: #333;
+  --disabled-text-color: #757575;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  --image-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --hover-bg-color: #e0e0e0;
+  --table-header-bg: #a1abb6;
+  --table-row-padding: 8px;
+}

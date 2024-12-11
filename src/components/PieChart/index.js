@@ -3,6 +3,7 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import * as XLSX from "xlsx";
 import { Box, Button } from "@mui/material";
+import "./styles.css";
 
 function PieChart({ characters }) {
   const chartRef = useRef(null);
@@ -18,7 +19,7 @@ function PieChart({ characters }) {
   const options = {
     chart: {
       type: "pie",
-      backgroundColor: "#c7c1c1cc",
+      backgroundColor: "var(--primary-bg-color)",
       height: "300px",
     },
     title: {
@@ -71,17 +72,7 @@ function PieChart({ characters }) {
   }, [characters]);
 
   return (
-    <Box
-      sx={{
-        p: 2,
-        backgroundColor: "#c7c1c1cc",
-        borderRadius: 2,
-        maxWidth: "100%",
-        margin: "0 auto",
-        mb: 2,
-        height: "auto",
-      }}
-    >
+    <Box className="pie-chart-container">
       <HighchartsReact
         highcharts={Highcharts}
         options={options}
@@ -90,7 +81,7 @@ function PieChart({ characters }) {
       <Button
         variant="contained"
         color="primary"
-        sx={{ mt: 2, display: "block", mx: "auto" }}
+        className="pie-chart-button"
         onClick={exportToExcel}
       >
         Export to Excel

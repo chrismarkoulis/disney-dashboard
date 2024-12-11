@@ -1,0 +1,12 @@
+@import "./global.css";
+
+.app-container {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  background-color: var(--primary-bg-color);
+  border-radius: 10px;
+  box-shadow: var(--box-shadow);
+}

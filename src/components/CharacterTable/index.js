@@ -8,6 +8,7 @@ import {
   TablePagination,
   TextField,
 } from "@mui/material";
+import "./styles.css";
 
 function CharacterTable({
   characters,
@@ -41,7 +42,7 @@ function CharacterTable({
   );
 
   return (
-    <div>
+    <div className="character-table-container">
       <TextField
         label="Search Characters"
         variant="outlined"
@@ -49,9 +50,12 @@ function CharacterTable({
         margin="normal"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
+        className="character-search-bar"
       />
+
       {status === "loading" && <p>Loading...</p>}
-      <Table>
+
+      <Table className="character-table">
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>
@@ -73,6 +77,7 @@ function CharacterTable({
           ))}
         </TableBody>
       </Table>
+
       <TablePagination
         component="div"
         count={filteredCharacters.length}
@@ -81,7 +86,9 @@ function CharacterTable({
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleChangeRowsPerPage}
         rowsPerPageOptions={[10, 20, 50, 100, 200, 500]}
-        disabled={page >= totalPages}
+        className={`character-table-pagination ${
+          page >= totalPages ? "disabled" : ""
+        }`}
       />
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCharacters } from "./store/features/charactersSlice";
 import { CharacterTable, CharacterModal, PieChart } from "./components";
-import "./App.css";
+import "./styles/App.css";
 
 function App() {
   const dispatch = useDispatch();

@@ -1,0 +1,17 @@
+.pie-chart-container {
+  padding: 16px;
+  background-color: var(--primary-bg-color);
+  border-radius: 8px;
+  max-width: 100%;
+  margin: 0 auto;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+}
+
+.pie-chart-button {
+  margin-top: 20px;
+  display: block;
+}

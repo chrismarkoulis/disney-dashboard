@@ -1,35 +1,45 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 export const fetchCharacters = createAsyncThunk(
-  'characters/fetchCharacters',
-  async (page) => {
-    const response = await axios.get(`https://api.disneyapi.dev/character?page=${page}`);
-    return response.data;
+  "characters/fetchCharacters",
+  async ({ page, pageSize }) => {
+    const response = await axios.get(
+      `https://api.disneyapi.dev/character?page=${page}&pageSize=${pageSize}`
+    );
+
+    return {
+      page,
+      data: response.data.data,
+      totalPages: response.data.info.totalPages,
+    };
   }
 );
 
 const charactersSlice = createSlice({
-  name: 'characters',
+  name: "characters",
   initialState: {
-    characters: [],
+    characters: {},
     totalPages: 1,
-    status: 'idle',
+    status: "idle",
     error: null,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchCharacters.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
       })
       .addCase(fetchCharacters.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.characters = action.payload.data;
-        state.totalPages = action.payload.totalPages;
+        console.log(action.payload);
+
+        const { page, data, totalPages } = action.payload;
+        state.status = "succeeded";
+        state.characters[page] = data;
+        state.totalPages = totalPages;
       })
       .addCase(fetchCharacters.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = "failed";
         state.error = action.error.message;
       });
   },

@@ -9,8 +9,16 @@ import {
   TextField,
 } from "@mui/material";
 
-function CharacterTable({ characters, status, onRowClick, setPage, page }) {
-  const [rowsPerPage, setRowsPerPage] = useState(50);
+function CharacterTable({
+  characters,
+  status,
+  onRowClick,
+  page,
+  setPage,
+  rowsPerPage,
+  setRowsPerPage,
+  totalPages,
+}) {
   const [search, setSearch] = useState("");
 
   const handleChangePage = (_, newPage) => {
@@ -18,12 +26,18 @@ function CharacterTable({ characters, status, onRowClick, setPage, page }) {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    const newRowsPerPage = parseInt(event.target.value, 10);
+    setRowsPerPage(newRowsPerPage);
     setPage(1);
   };
 
   const filteredCharacters = characters.filter((character) =>
     character.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const paginatedCharacters = filteredCharacters.slice(
+    (page - 1) * rowsPerPage,
+    page * rowsPerPage
   );
 
   return (
@@ -48,7 +62,7 @@ function CharacterTable({ characters, status, onRowClick, setPage, page }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {filteredCharacters.slice(0, rowsPerPage).map((character) => (
+          {paginatedCharacters.map((character) => (
             <TableRow key={character._id} onClick={() => onRowClick(character)}>
               <TableCell>{character.name}</TableCell>
               <TableCell>{character.tvShows.length}</TableCell>
@@ -67,6 +81,7 @@ function CharacterTable({ characters, status, onRowClick, setPage, page }) {
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleChangeRowsPerPage}
         rowsPerPageOptions={[10, 20, 50, 100, 200, 500]}
+        disabled={page >= totalPages}
       />
     </div>
   );
